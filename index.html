@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>التحكم في الروبوت</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        button {
+            padding: 15px 25px;
+            margin: 10px;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #ddd;
+        }
+    </style>
+</head>
+<body>
+    <h1>التحكم في اتجاه حركة الروبوت</h1>
+    <button onclick="sendCommand('forward')">أمام</button>
+    <button onclick="sendCommand('backward')">خلف</button>
+    <button onclick="sendCommand('left')">يسار</button>
+    <button onclick="sendCommand('right')">يمين</button>
+
+    <script>
+        function sendCommand(direction) {
+            fetch('send_command.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ direction: direction }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data.success) {
+                    alert('تم إرسال الأمر بنجاح');
+                } else {
+                    alert('حدث خطأ: ' + data.error);
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</body>
+</html>
